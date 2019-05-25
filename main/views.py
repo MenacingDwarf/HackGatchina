@@ -107,8 +107,10 @@ def normalize(request):
     objects = Sight.objects.all()
     for obj in objects:
         cur = json.loads(obj.categories)
-        for key in cur:
-            cur[key] /= norm(list(cur.values()))
+        n = norm(list(cur.values()))
+        if n != 0:
+            for key in cur:
+                cur[key] /= n
         obj.categories = json.dumps(cur)
         obj.save()
 
