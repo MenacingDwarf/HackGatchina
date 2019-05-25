@@ -1,26 +1,42 @@
-import React, { Component } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom'
+import React, {Component} from 'react';
+import {BrowserRouter, Route} from 'react-router-dom'
 import Home from './components/Home'
 import Contacts from "./components/Contacts";
 import Navbar from "./components/Navbar";
 import SelectCategory from "./components/SelectCategory";
+import SelectPlaces from "./components/SelectPlaces";
 
 class App extends Component {
+    state = {
+        categories: []
+    };
 
-  render() {
-    return (
-        <BrowserRouter>
-          <div className="App">
-            <Navbar/>
-            <div className="container">
-              <Route exact path='/' component={Home} />
-              <Route path='/contacts' component={Contacts} />
-              <Route path='/route' component={SelectCategory} />
-            </div>
-          </div>
-        </BrowserRouter>
-    );
-  }
+    getCategories = (categories) => {
+        this.setState({
+            categories
+        })
+    };
+
+    render() {
+        return (
+            <BrowserRouter>
+                <div className="App">
+                    <Navbar/>
+                    <div className="container">
+                        <Route exact path='/' component={Home}/>
+                        <Route path='/contacts' component={Contacts}/>
+                        <Route path='/route' render={(routeProps) => (
+                            <SelectCategory {...routeProps} getCategories={this.getCategories}/>
+                        )}/>
+
+                        <Route path='/places' render={(routeProps) => (
+                            <SelectPlaces {...routeProps} categories={this.state.categories} />
+                        )} />
+                    </div>
+                </div>
+            </BrowserRouter>
+        );
+    }
 }
 
 export default App;

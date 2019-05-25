@@ -117,7 +117,7 @@ def normalize(request):
         obj.save()
 
 def vector(request):
-    info = {'history': 30, 'war': 20, 'art': 0, 'religion': 10, 'nature': 0, 'interesting': 0, 'architecture': 40}
+    info = json.loads(request.GET.get('info'))
     n = norm(list(info.values()))
     if n != 0:
         for key in info:
@@ -134,4 +134,5 @@ def vector(request):
     res = []
     for key in sorted(priority.keys()):
         res += priority[key]
-    return HttpResponse(serializers.serialize("json", res))
+    print(serializers.serialize("json", res))
+    return JsonResponse({"res": serializers.serialize("json", res)})
