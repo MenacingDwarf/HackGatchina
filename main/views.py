@@ -104,6 +104,7 @@ from numpy.linalg import norm
 import numpy as np
 from collections import defaultdict
 from django.core import serializers
+import ast
 
 def normalize(request):
     objects = Sight.objects.all()
@@ -120,7 +121,7 @@ def normalize(request):
 def vector(request):
     info = json.loads(request.GET.get('info'))
     accepted = json.loads(request.GET.get('accepted'))
-    cancelled = json.loads(request.GET.get('cancelled'))
+    cancelled = json.loads(ast.literal_eval(request.GET.get('cancelled')))
     n = norm(list(info.values()))
     if n != 0:
         for key in info:
