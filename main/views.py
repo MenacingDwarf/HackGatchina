@@ -1,11 +1,12 @@
-from django.shortcuts import render
-from django.http import JsonResponse, HttpResponse
-import requests
-import time
 import datetime
-from .models import Sight, Depot
-import numpy as np
 import json
+import time
+
+import requests
+from django.http import JsonResponse, HttpResponse
+from django.shortcuts import render
+
+from .models import Sight
 
 
 def hello(request):
@@ -98,11 +99,34 @@ def build(request):
     return render(request, 'map.html', {'ids': ids, 'location': location})
 
 
-def vector(request):
-    info = {'history': 30, 'war': 20, 'art': 0, 'religion': 10, 'nature': 0, 'interesting': 0, 'architecture': 40}
+from numpy.linalg import norm
+import numpy as np
+from collections import defaultdict
 
+def normalize(request):
     objects = Sight.objects.all()
     for obj in objects:
-        print(type(json.loads(obj.categories)))
+        cur = json.loads(obj.categories)
+        for key in cur:
+            cur[key] /= norm(list(cur.values()))
+        obj.categories = json.dumps(cur)
+        obj.save()
 
-    return HttpResponse(objects)
+def vector(request):
+    info = {'history': 30, 'war': 20, 'art': 0, 'religion': 10, 'nature': 0, 'interesting': 0, 'architecture': 40}
+    n = norm(list(info.values()))
+    for key in info:
+        info[key] /= n
+    objects = Sight.objects.all()
+    priority = defaultdict(list)
+    for obj in objects:
+        cur = json.loads(obj.categories)
+        for key in cur:
+            cur[key] /= norm(list(cur.values()))
+        obj.categories = json.dumps(cur)
+        obj.save()
+        priority[np.dot(np.array(list(cur.values())), np.array(list(info.values())))].append(obj)
+    res = []
+    for key in sorted(priority.keys()):
+        res += priority[key]
+    return HttpResponse(res)
