@@ -7,7 +7,7 @@ class Home extends Component {
         return (
             <div>
                 <div className="row">
-                    <div id="carouselExampleControls" className="carousel slide w-75 mx-auto" data-ride="carousel">
+                    <div id="carouselExampleControls" className="carousel slide w-100 mx-auto" data-ride="carousel">
                         <div className="carousel-inner">
                             <div className="carousel-item active">
                                 <img src="http://1945.sputnik.ru/img/city/gatchina.jpg" className="d-block w-100"

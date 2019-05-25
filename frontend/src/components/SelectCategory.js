@@ -1,18 +1,16 @@
 import React, {Component} from 'react'
 import Category from './Category'
-import History from '../images/history.png'
-import War from '../images/war.png'
 
 class SelectCategory extends Component {
     state = {
         categories: [
-            {id: 0, name: "history", title: "История", image: History, answer: 0},
-            {id: 1, name: "war", title: "Война", image: War, answer: 0},
-            {id: 2, name: "art", title: "Искусство", image: "", answer: 0},
-            {id: 3, name: "religion", title: "Религия", image: "", answer: 0},
-            {id: 4, name: "nature", title: "Природа", image: "", answer: 0},
-            {id: 5, name: "interesting", title: "Интересные места", image: "", answer: 0},
-            {id: 6, name: "architecture", title: "Архитектура", image: "", answer: 0}
+            {id: 0, name: "history", title: "История", image: "https://pp.userapi.com/c855628/v855628470/4c096/h1MwiY05BrE.jpg", answer: 0},
+            {id: 1, name: "war", title: "Война", image: "https://pp.userapi.com/c855628/v855628470/4c09e/bvgl1IPnaAA.jpg", answer: 0},
+            {id: 2, name: "art", title: "Искусство", image: "https://pp.userapi.com/c855628/v855628470/4c0a6/BIthWHXb65s.jpg", answer: 0},
+            {id: 3, name: "religion", title: "Религия", image: "https://pp.userapi.com/c855628/v855628470/4c0b7/NQmtiWW7Mc4.jpg", answer: 0},
+            {id: 4, name: "nature", title: "Природа", image: "https://pp.userapi.com/c855628/v855628470/4c0bf/VF7D5x64HcA.jpg", answer: 0},
+            {id: 5, name: "interesting", title: "Интересные места", image: "https://pp.userapi.com/c855628/v855628470/4c0c7/RNkGnusugeQ.jpg", answer: 0},
+            {id: 6, name: "architecture", title: "Архитектура", image: "https://pp.userapi.com/c855628/v855628470/4c0e1/wlT1T-zOthI.jpg", answer: 0}
             ],
         current: 0,
     };
