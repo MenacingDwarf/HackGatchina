@@ -3,6 +3,7 @@ import { BrowserRouter, Route } from 'react-router-dom'
 import Home from './components/Home'
 import Contacts from "./components/Contacts";
 import Navbar from "./components/Navbar";
+import SelectCategory from "./components/SelectCategory";
 
 class App extends Component {
 
@@ -14,6 +15,7 @@ class App extends Component {
             <div className="container">
               <Route exact path='/' component={Home} />
               <Route path='/contacts' component={Contacts} />
+              <Route path='/route' component={SelectCategory} />
             </div>
           </div>
         </BrowserRouter>
