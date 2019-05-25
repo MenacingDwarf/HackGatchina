@@ -21,6 +21,7 @@ def route(request):
     cafes = []
     cafe_location = []
 
+
     if request.GET.get('food'):
         # food = json.loads(request.GET.get('food'))
         food = request.GET.get('food')
@@ -58,6 +59,15 @@ def route(request):
             {'id': i + 1, 'time_window': '09:00-20:00', 'point': {'lat': place['lat'], 'lon': place['lon']}})
         names.append(place['name'])
         locations.append([place['lat'], place['lon']])
+
+    if request.GET.get('cafe'):
+        cafe = request.GET.get('cafe')
+        print(cafe)
+        names.append(cafe['name'])
+        locations.append(cafe['coords'])
+        cafes.remove(names[-1])
+        cafe_location.remove(locations[-1])
+
 
     print(payload)
     print(names)

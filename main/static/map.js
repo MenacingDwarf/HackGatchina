@@ -46,7 +46,7 @@ function init() {
         }
     }, {
         // Автоматически устанавливать границы карты так, чтобы маршрут был виден целиком.
-        boundsAutoApply: true
+        //boundsAutoApply: true
     });
 
 
@@ -56,6 +56,7 @@ function init() {
         zoom: 7,
         controls: ['smallMapDefaultSet']
     }, {
+        //autoFitToViewport: 'always',
         buttonMaxWidth: 300
     });
 
