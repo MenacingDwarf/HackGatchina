@@ -31,8 +31,8 @@ class Home extends Component {
                         </a>
                     </div>
                 </div>
-                <div className="row container">
-                    <center>
+                <div className="row">
+                    <center className="container">
                         <div className="h3">Добро пожаловать в Гатчину!</div>
                         <p>Мы привествуем всех гостей Гатчины и хотим предложить вам сконструировать свою
                             персонализированную прогулку по прекрасному городу Гатчина!</p>
