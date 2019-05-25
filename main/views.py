@@ -118,11 +118,9 @@ def normalize(request):
     return JsonResponse({})
 
 def vector(request):
-    print(type(request.GET.get('cancelled')))
     info = json.loads(request.GET.get('info'))
     accepted = json.loads(request.GET.get('accepted'))
     cancelled = json.loads(request.GET.get('cancelled'))
-    print(type(cancelled))
     n = norm(list(info.values()))
     if n != 0:
         for key in info:
