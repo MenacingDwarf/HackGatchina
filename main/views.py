@@ -16,8 +16,28 @@ def hello(request):
 
 
 def route(request):
-    # print(request.GET.get('places'))
     places = json.loads(request.GET.get('places'))
+
+    cafes = []
+    cafe_location = []
+
+    if request.GET.get('food'):
+        # food = json.loads(request.GET.get('food'))
+        food = request.GET.get('food')
+        print(food)
+
+        response = requests.get(
+            'https://search-maps.yandex.ru/v1/?text={}&bbox=30.066693,59.546795~30.196469,59.602701&lang=ru_RU&apikey=925823c2-96c4-49ad-bb4a-fc036ba90c0f'.format(
+                food))
+
+        content = response.json()
+        for i in content['features']:
+            if "'" not in i['properties']['CompanyMetaData']['name']:
+                cafes.append(i['properties']['CompanyMetaData']['name'])
+                cafe_location.append(list(reversed(i['geometry']['coordinates'])))
+
+        print(cafes)
+        print(cafe_location)
 
     API_KEY = 'f829f73b-e5a2-4c8f-acd2-ed6e84a04a73'
     API_ROOT_ENDPOINT = 'https://courier.common.yandex.ru/vrs/api/v1'
@@ -100,8 +120,10 @@ def route(request):
                 print('Порядок ', ids)
                 names.insert(0, 'Вокзал')
                 locations.insert(0, [59.55971, 30.102793])
-                return render(request, 'map.html', {'names': names, 'points': locations, 'order': ids})
-                    #JsonResponse({'names': names, 'points': locations, 'order': ids})
+                return render(request, 'map.html',
+                              {'names': names, 'points': locations, 'order': ids, 'cafe_location': cafe_location,
+                               'cafes': cafes})
+                # JsonResponse({'names': names, 'points': locations, 'order': ids})
 
     return JsonResponse({})
 
@@ -180,7 +202,6 @@ def vector(request):
 
 
 def food(request):
-
     product = request.GET.get('product')
 
     response = requests.get(
@@ -201,5 +222,5 @@ def food(request):
 
 
 def predict(request):
-    #answer = pred(request.GET.get('asda'))
+    # answer = pred(request.GET.get('asda'))
     pass

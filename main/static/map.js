@@ -9,6 +9,15 @@ function init() {
     names = JSON.parse(names);
     //alert(names);
 
+    var cafes = document.getElementById("cafes").innerHTML;
+    cafes = cafes.split('"');
+    //alert(names.join('"'));
+    cafes = cafes.join('\\"');
+    cafes = cafes.split('\'');
+    //alert(names.join('"'));
+    cafes = cafes.join('"');
+    cafes = JSON.parse(cafes);
+
     // var cafes = document.getElementById("cafes").innerHTML;
     // cafes = cafes.split('\'');
     // cafes = JSON.parse(cafes.join('"'));
@@ -62,15 +71,15 @@ function init() {
     // Добавляем мультимаршрут на карту.
     myMap.geoObjects.add(multiRoute);
 
-    // alert(cafes);
-    // for (var i = 0; i < cafe_locations.length; i++) {
-    //     //alert(cafe_locations[i]);
-    //     myMap.geoObjects.add(new ymaps.Placemark(cafe_locations[i], {
-    //         balloonContent: '<p>' + cafes[i] + '</p><a href="https://github.com"><button><p style="color: green">Добавить в маршрут</p></button></a>'
-    //     }, {
-    //         preset: 'islands#redSportIcon'
-    //     }));
-    // }
+    //alert(cafes);
+    for (var i = 0; i < cafe_locations.length; i++) {
+        //alert(cafe_locations[i]);
+        myMap.geoObjects.add(new ymaps.Placemark(cafe_locations[i], {
+            balloonContent: '<p>' + cafes[i] + '</p><a href="https://github.com"><button><p style="color: green">Добавить в маршрут</p></button></a>'
+        }, {
+            preset: 'islands#redSportIcon'
+        }));
+    }
 
     console.log(points.join('\n'));
     for (var i = 0; i < npoints.length; i++) {
