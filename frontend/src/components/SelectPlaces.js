@@ -3,34 +3,28 @@ import Place from "./Place";
 
 class SelectPlaces extends Component {
     state = {
-        categories: [],
+        categories: this.props.categories,
         sights: [],
         current: 0,
+        passed: [],
         liked: [],
         cancelled: []
     };
 
-    sendToServer(comp, cancelled) {
+    sendToServer(comp, passed, cancelled) {
         var xhr = new XMLHttpRequest();
-        var body = '?info={';
-        comp.props.categories.forEach(cat => {
-            body += '"' + cat.category + '": ' + cat.value + ', '
-        });
-        body = body.slice(0, -2) + '}';
-        var accepted = comp.state.liked.map(sight => {
-            return sight.pk
-        });
-        var ncancelled = cancelled.map(sight => {
-            return sight.fields.categories
-        });
-        body += '&accepted=' + JSON.stringify(accepted);
-        body += '&cancelled=' + JSON.stringify(ncancelled);
+        var body = '?info=' + JSON.stringify(comp.state.categories);
+        var ncancelled = cancelled ? cancelled.fields.categories : "{}";
+        body += '&accepted=' + JSON.stringify(passed);
+        body += '&cancelled=' + ncancelled.toString();
         console.log(body);
         xhr.open("GET", 'http://127.0.0.1:8000/vector' + body, true);
         xhr.onreadystatechange = function () {
             if (this.readyState !== 4) return;
             var answer = JSON.parse(decodeURIComponent(this.responseText));
             answer.sights = JSON.parse(answer.sights);
+            console.log(answer.info);
+            console.log(answer.sights.map(s => s.fields.name));
             comp.setState({
                 sights: answer.sights,
                 categories: answer.info
@@ -42,7 +36,7 @@ class SelectPlaces extends Component {
 
     componentDidMount() {
 
-        this.sendToServer(this, [])
+        this.sendToServer(this, [],null)
     }
 
     likeSight = (id) => {
@@ -50,24 +44,28 @@ class SelectPlaces extends Component {
         let liked = [...this.state.liked, this.state.sights.find(sight => {
             return sight.pk === id
         })];
+        let passed = [...this.state.passed, id];
         console.log("liked", liked);
         this.setState({
             current: current,
-            liked: liked
+            liked: liked,
+            passed: passed
         });
     };
 
     dislikeSight = (id) => {
-        let cancelled = [...this.state.cancelled, this.state.sights.find(sight => {
+        let cancelled = this.state.sights.find(sight => {
             return sight.pk === id
-        })];
+        });
+        let passed = [...this.state.passed, id];
         console.log("cancelled", cancelled);
         this.setState({
             current: 0,
             cancelled: cancelled,
-            sights: []
+            sights: [],
+            passed: passed
         });
-        this.sendToServer(this,cancelled)
+        this.sendToServer(this,passed,cancelled)
     };
 
     endSelecting = () => {
@@ -80,7 +78,7 @@ class SelectPlaces extends Component {
         var sight = this.state.sights.length !== 0 ?
             <Place sight={this.state.sights[this.state.current]} like={this.likeSight}
                    dislike={this.dislikeSight} endSelecting={this.endSelecting}/> :
-            <div>Loading...</div>;
+            <div>Подбираем для вас лучшие варианты...</div>;
         return (
             <div>
                 {sight}
