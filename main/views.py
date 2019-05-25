@@ -55,14 +55,10 @@ def route(request):
     names = []
     locations = []
 
-    for i, place in enumerate(places):
-        payload['locations'].append(
-            {'id': i + 1, 'time_window': '09:00-20:00', 'point': {'lat': place['lat'], 'lon': place['lon']}})
-        names.append(place['name'])
-        locations.append([place['lat'], place['lon']])
+
 
     if request.GET.get('cafe'):
-        cafe = request.GET.get('cafe')
+        cafe = json.loads(request.GET.get('cafe'))
         print(cafe)
         names.append(cafe['name'])
         locations.append(cafe['coords'])
@@ -73,6 +69,12 @@ def route(request):
     print(payload)
     print(names)
     print(locations)
+
+    for i, place in enumerate(places):
+        payload['locations'].append(
+            {'id': i + 1, 'time_window': '09:00-20:00', 'point': {'lat': place['lat'], 'lon': place['lon']}})
+        names.append(place['name'])
+        locations.append([place['lat'], place['lon']])
 
     # Отправьте запрос и получите ID поставленной задачи.
     response = requests.post(
