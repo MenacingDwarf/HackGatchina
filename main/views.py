@@ -126,12 +126,10 @@ def vector(request):
     priority = defaultdict(list)
     for obj in objects:
         cur = json.loads(obj.categories)
-        for key in cur:
-            cur[key] /= norm(list(cur.values()))
-        obj.categories = json.dumps(cur)
-        obj.save()
         priority[np.dot(np.array(list(cur.values())), np.array(list(info.values())))].append(obj)
+        print(obj.name)
     res = []
     for key in sorted(priority.keys()):
         res += priority[key]
-    return HttpResponse(serializers.serialize("json", res))
+
+    return HttpResponse(serializers.serialize("json", res, ensure_ascii=False))
