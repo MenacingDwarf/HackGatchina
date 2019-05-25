@@ -115,6 +115,7 @@ def normalize(request):
                 cur[key] /= n
         obj.categories = json.dumps(cur)
         obj.save()
+    return JsonResponse({})
 
 def vector(request):
     info = json.loads(request.GET.get('info'))
@@ -143,4 +144,4 @@ def vector(request):
     for key in sorted(priority.keys()):
         res += priority[key]
 
-    return HttpResponse({"sights": serializers.serialize("json", res, ensure_ascii=False), "info": info})
+    return JsonResponse({"sights": serializers.serialize("json", res, ensure_ascii=False), "info": info})
