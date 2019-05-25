@@ -103,6 +103,7 @@ def build(request):
 from numpy.linalg import norm
 import numpy as np
 from collections import defaultdict
+from django.core import serializers
 
 def normalize(request):
     objects = Sight.objects.all()
@@ -133,4 +134,4 @@ def vector(request):
     res = []
     for key in sorted(priority.keys()):
         res += priority[key]
-    return HttpResponse(res)
+    return HttpResponse(serializers.serialize("json", res))
