@@ -3,6 +3,9 @@ from django.http import JsonResponse, HttpResponse
 import requests
 import time
 import datetime
+from .models import Sight, Depot
+import numpy as np
+import json
 
 
 def hello(request):
@@ -16,13 +19,13 @@ def route(request):
 
     # Создайте тело запроса, включая склад, точки доставки, транспортное средство и настройки.
     payload = {
-        'depot': {'id': 0, 'time_window': '07:00-23:59', 'point': {'lat': 55.733777, 'lon': 37.588118}},
+        'depot': {'id': 0, 'time_window': '07:00-23:59', 'point': {'lat': 59.55971, 'lon': 30.102793}},
         'locations': [
-            {'id': 1, 'time_window': '09:00-20:00', 'point': {'lat': 55.684872, 'lon': 37.595965}},
-            {'id': 2, 'time_window': '15:00-20:00', 'point': {'lat': 55.739796, 'lon': 37.689102}},
-            {'id': 3, 'time_window': '12:00-15:00', 'point': {'lat': 55.809657, 'lon': 37.520314}},
-            {'id': 4, 'time_window': '09:00-15:00', 'point': {'lat': 55.744764, 'lon': 37.558224}},
-            #{'id': 5, 'time_window': '15:00-20:00', 'point': {'lat': 55.788563, 'lon': 37.670101}},
+            {'id': 1, 'time_window': '09:00-20:00', 'point': {'lat': 59.567352, 'lon': 30.100999}},
+            {'id': 2, 'time_window': '15:00-20:00', 'point': {'lat': 59.56954, 'lon': 30.11393}},
+            # {'id': 3, 'time_window': '12:00-15:00', 'point': {'lat': 55.809657, 'lon': 37.520314}},
+            # {'id': 4, 'time_window': '09:00-15:00', 'point': {'lat': 55.744764, 'lon': 37.558224}},
+            # {'id': 5, 'time_window': '15:00-20:00', 'point': {'lat': 55.788563, 'lon': 37.670101}},
         ],
         'vehicle': {'id': 0},
         'options': {'time_zone': 3}
@@ -32,9 +35,6 @@ def route(request):
     response = requests.post(
         API_ROOT_ENDPOINT + '/add/svrp',
         params={'apikey': API_KEY}, json=payload)
-
-
-
 
     # Дождитесь ответа.
     poll_stop_codes = {
@@ -53,9 +53,6 @@ def route(request):
             time.sleep(1)
             response = requests.get(poll_url)
 
-
-
-
         # Вывод информации в пользовательском формате.
         if response.status_code != 200:
             print('Error {}: {}'.format(response.text, response.status_code))
@@ -68,7 +65,7 @@ def route(request):
                 print('Vehicle {} route: {:.2f}km'.format(
                     route['vehicle_id'], route['metrics']['total_transit_distance_m'] / 1000))
 
-
+                ids = []
                 # Вывод маршрута в текстовом формате.
                 for waypoint in route['route']:
                     print('  {type} {id} at {eta}, {distance:.2f}km driving '.format(
@@ -76,6 +73,7 @@ def route(request):
                         id=waypoint['node']['value']['id'],
                         eta=str(datetime.timedelta(seconds=waypoint['arrival_time_s'])),
                         distance=waypoint['transit_distance_m'] / 1000))
+                    ids.append(waypoint['node']['value']['id'])
 
                 # Вывод маршрута в формате ссылки на Яндекс.Карты.
                 yamaps_url = 'https://yandex.ru/maps/?mode=routes&rtext='
@@ -87,7 +85,24 @@ def route(request):
                 print('See route on Yandex.Maps:')
                 print(yamaps_url)
 
+                print('Порядок ', ids)
                 return HttpResponse('кажется что то работает')
 
-
     return HttpResponse('вообще хз что происходит')
+
+
+def build(request):
+    ids = [0, 1, 2]
+    location = [[59.55971, 30.102793], [59.567352, 30.100999], [59.56954, 30.11393]]
+
+    return render(request, 'map.html', {'ids': ids, 'location': location})
+
+
+def vector(request):
+    info = {'history': 30, 'war': 20, 'art': 0, 'religion': 10, 'nature': 0, 'interesting': 0, 'architecture': 40}
+
+    objects = Sight.objects.all()
+    for obj in objects:
+        print(type(json.loads(obj.categories)))
+
+    return HttpResponse(objects)
