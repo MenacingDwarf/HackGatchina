@@ -130,6 +130,8 @@ def vector(request):
     objects = Sight.objects.all()
     priority = defaultdict(list)
     for obj in objects:
+        obj.categories = obj.categories.replace('\'', '"')
+        obj.save()
         cur = json.loads(obj.categories)
         # for key in cur:
         #     cur[key] /= norm(list(cur.values()))
