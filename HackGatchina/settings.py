@@ -79,8 +79,12 @@ WSGI_APPLICATION = 'HackGatchina.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'dajssft8q08m5u',
+        'USER': 'prtjngzjseeihk',
+        'PASSWORD': '7f79d049881ac9feff1a94373b427b9aa7653f6a774f87318f99f25fc0a92445',
+        'HOST': 'ec2-54-246-92-116.eu-west-1.compute.amazonaws.com',
+        'PORT': '5432',
     }
 }
 
