@@ -115,8 +115,9 @@ def normalize(request):
 def vector(request):
     info = {'history': 30, 'war': 20, 'art': 0, 'religion': 10, 'nature': 0, 'interesting': 0, 'architecture': 40}
     n = norm(list(info.values()))
-    for key in info:
-        info[key] /= n
+    if n != 0:
+        for key in info:
+            info[key] /= n
     objects = Sight.objects.all()
     priority = defaultdict(list)
     for obj in objects:
