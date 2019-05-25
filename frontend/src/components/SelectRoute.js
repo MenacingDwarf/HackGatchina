@@ -10,7 +10,7 @@ class SelectRoute extends Component {
         var places = this.props.places.map(place => {
             return {name: place.fields.name, lat: place.fields.lat, lon: place.fields.lon}
         });
-        var body = '?places=' + JSON.stringify(places);
+        var body = '?places=' + places.toString();
         console.log(body);
         xhr.open("GET", 'http://127.0.0.1:8000/route' + body, true);
         xhr.onreadystatechange = function () {
