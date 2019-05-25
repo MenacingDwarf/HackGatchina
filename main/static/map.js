@@ -18,9 +18,6 @@ function init() {
     cafes = cafes.join('"');
     cafes = JSON.parse(cafes);
 
-    // var cafes = document.getElementById("cafes").innerHTML;
-    // cafes = cafes.split('\'');
-    // cafes = JSON.parse(cafes.join('"'));
 
     let npoints = [];
     let nnames = [];
@@ -43,26 +40,12 @@ function init() {
         boundsAutoApply: true
     });
 
-    //Создаем кнопку.
-    var changePointsButton = new ymaps.control.Button({
-        data: {content: "Поменять местами точки А и В"},
-        options: {selectOnClick: true}
-    });
-
-    //Объявляем обработчики для кнопки.
-    changePointsButton.events.add('select', function () {
-        multiRoute.model.setReferencePoints([npoints[0], npoints[1]]);
-    });
-
-    changePointsButton.events.add('deselect', function () {
-        multiRoute.model.setReferencePoints([npoints[1], npoints[0]]);
-    });
 
     // Создаем карту с добавленной на нее кнопкой.
     var myMap = new ymaps.Map('map', {
         center: [59.55971, 30.102793],
         zoom: 7,
-        controls: [changePointsButton]
+        controls: ['smallMapDefaultSet']
     }, {
         buttonMaxWidth: 300
     });
