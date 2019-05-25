@@ -97,13 +97,32 @@ def build(request):
     location = [[59.55971, 30.102793], [59.567352, 30.100999], [59.56954, 30.11393]]
     names = ["Вокзал", "Гей парад", "Калич"]
 
-    return render(request, 'map.html', {'ids': ids, 'location': location, 'names': names})
+    response = requests.get(
+        'https://search-maps.yandex.ru/v1/?text=Бургеры&bbox=30.066693,59.546795~30.196469,59.602701&lang=ru_RU&apikey=925823c2-96c4-49ad-bb4a-fc036ba90c0f')
+
+    content = response.json()
+    cafes = []
+    cafe_location = []
+    for i in content['features']:
+        if "'" not in i['properties']['CompanyMetaData']['name']:
+            cafes.append(i['properties']['CompanyMetaData']['name'])
+            cafe_location.append(list(reversed(i['geometry']['coordinates'])))
+        else:
+
+            print('мда')
+
+    print(cafes)
+    print(cafe_location)
+
+    return render(request, 'map.html',
+                  {'ids': ids, 'location': location, 'names': names, 'cafes': cafes, 'cafe_location': cafe_location})
 
 
 from numpy.linalg import norm
 import numpy as np
 from collections import defaultdict
 from django.core import serializers
+
 
 def normalize(request):
     objects = Sight.objects.all()
@@ -116,6 +135,7 @@ def normalize(request):
         obj.categories = json.dumps(cur)
         obj.save()
 
+
 def vector(request):
     info = json.loads(request.GET.get('info'))
     n = norm(list(info.values()))
@@ -126,13 +146,28 @@ def vector(request):
     priority = defaultdict(list)
     for obj in objects:
         cur = json.loads(obj.categories)
-        # for key in cur:
-        #     cur[key] /= norm(list(cur.values()))
-        # obj.categories = json.dumps(cur)
-        # obj.save()
         priority[np.dot(np.array(list(cur.values())), np.array(list(info.values())))].append(obj)
     res = []
     for key in sorted(priority.keys()):
         res += priority[key]
     print(serializers.serialize("json", res))
-    return JsonResponse({"res": serializers.serialize("json", res)})
+
+    return JsonResponse({"res": Sight.objects.get(id=1).name})
+
+
+def food(request):
+    response = requests.get(
+        'https://search-maps.yandex.ru/v1/?text=Японская кухня&bbox=30.066693,59.546795~30.196469,59.602701&lang=ru_RU&apikey=925823c2-96c4-49ad-bb4a-fc036ba90c0f')
+
+    content = response.json()
+    cafes = []
+    cafe_location = []
+    for i in content['features']:
+        print(i['properties']['CompanyMetaData']['name'])
+        cafes.append(i['properties']['CompanyMetaData']['name'])
+        cafe_location.append(i['geometry']['coordinates'])
+
+    print(cafes)
+    print(cafe_location)
+
+    return HttpResponse(response)
