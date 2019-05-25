@@ -80,8 +80,6 @@ function init() {
     }
 }
 
-function click() {
-    alert("hi")
-}
+
 
 ymaps.ready(init);

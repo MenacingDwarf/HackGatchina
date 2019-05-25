@@ -7,6 +7,7 @@ from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 
 from .models import Sight
+from .learn import pred
 
 
 def hello(request):
@@ -97,7 +98,8 @@ def route(request):
                 print(yamaps_url)
 
                 print('Порядок ', ids)
-                return JsonResponse({'names': names, 'points': locations, 'order': ids})
+                return render(request, 'map.html', {'names': names, 'points': locations, 'order': ids})
+                    #JsonResponse({'names': names, 'points': locations, 'order': ids})
 
     return JsonResponse({})
 
@@ -194,3 +196,8 @@ def food(request):
             print('мда')
 
     return HttpResponse('lol')
+
+
+def predict(request):
+    #answer = pred(request.GET.get('asda'))
+    pass
