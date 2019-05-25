@@ -1,3 +1,12 @@
+function send_food(elem) {
+    console.log('hi');
+    window.location.href += "&food=" + food_text.value;
+}
+
+var food = document.getElementById("sendFood");
+food.setAttribute("onclick", "send_food(this)");
+var food_text = document.getElementById("food-text");
+
 function init() {
     var names = document.getElementById("names").innerHTML;
     names = names.split('"');
@@ -87,7 +96,6 @@ function init() {
         }));
     }
 }
-
 
 
 ymaps.ready(init);
