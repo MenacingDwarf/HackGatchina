@@ -103,21 +103,25 @@ def build(request):
 from numpy.linalg import norm
 import numpy as np
 from collections import defaultdict
+from django.core import serializers
 
 def normalize(request):
     objects = Sight.objects.all()
     for obj in objects:
         cur = json.loads(obj.categories)
-        for key in cur:
-            cur[key] /= norm(list(cur.values()))
+        n = norm(list(cur.values()))
+        if n != 0:
+            for key in cur:
+                cur[key] /= n
         obj.categories = json.dumps(cur)
         obj.save()
 
 def vector(request):
-    info = {'history': 30, 'war': 20, 'art': 0, 'religion': 10, 'nature': 0, 'interesting': 0, 'architecture': 40}
+    info = json.loads(request.GET.get('info'))
     n = norm(list(info.values()))
-    for key in info:
-        info[key] /= n
+    if n != 0:
+        for key in info:
+            info[key] /= n
     objects = Sight.objects.all()
     priority = defaultdict(list)
     for obj in objects:
@@ -130,4 +134,5 @@ def vector(request):
     res = []
     for key in sorted(priority.keys()):
         res += priority[key]
-    return HttpResponse(res)
+    print(serializers.serialize("json", res))
+    return JsonResponse({"res": serializers.serialize("json", res)})
