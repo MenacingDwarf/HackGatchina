@@ -118,10 +118,15 @@ def normalize(request):
 
 def vector(request):
     info = json.loads(request.GET.get('info'))
+    accepted = json.loads(request.GET.get('accepted'))
+    cancelled = json.loads(request.GET.get('cancelled'))
     n = norm(list(info.values()))
     if n != 0:
         for key in info:
             info[key] /= n
+    if len(cancelled) != 0:
+        for key in cancelled:
+            info[key] -= cancelled[key]/5
     objects = Sight.objects.all()
     priority = defaultdict(list)
     for obj in objects:
@@ -130,9 +135,10 @@ def vector(request):
         #     cur[key] /= norm(list(cur.values()))
         # obj.categories = json.dumps(cur)
         # obj.save()
-        priority[np.dot(np.array(list(cur.values())), np.array(list(info.values())))].append(obj)
+        if obj.id not in accepted:
+            priority[np.dot(np.array(list(cur.values())), np.array(list(info.values())))].append(obj)
     res = []
     for key in sorted(priority.keys()):
         res += priority[key]
 
-    return HttpResponse(serializers.serialize("json", res, ensure_ascii=False))
+    return HttpResponse({"sights": serializers.serialize("json", res, ensure_ascii=False), "info": info})
