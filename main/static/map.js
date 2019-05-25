@@ -53,7 +53,7 @@ function init() {
     // Создаем карту с добавленной на нее кнопкой.
     var myMap = new ymaps.Map('map', {
         center: [59.55971, 30.102793],
-        zoom: 7,
+        zoom: 15,
         controls: ['smallMapDefaultSet']
     }, {
         //autoFitToViewport: 'always',
@@ -67,8 +67,15 @@ function init() {
     //alert(cafes);
     for (var i = 0; i < cafe_locations.length; i++) {
         //alert(cafe_locations[i]);
+        var cafe = {
+            name: cafes[i],
+            coords: cafe_locations[i]
+        };
+        cafe.name = cafe.name.split(' ');
+        cafe.name = cafe.name.join('+');
+        var link = window.location.href + "&cafe=" + JSON.stringify(cafe);
         myMap.geoObjects.add(new ymaps.Placemark(cafe_locations[i], {
-            balloonContent: '<p>' + cafes[i] + '</p><a href="https://github.com"><button><p style="color: green">Добавить в маршрут</p></button></a>'
+            balloonContent: '<p>' + cafes[i] + '</p><a href='+link+'><button><p style="color: green">Добавить в маршрут</p></button></a>'
         }, {
             preset: 'islands#redSportIcon'
         }));

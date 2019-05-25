@@ -17,6 +17,7 @@ def hello(request):
 
 def route(request):
     places = json.loads(request.GET.get('places'))
+    print(request.GET.get('cafe'))
 
     cafes = []
     cafe_location = []
