@@ -30,14 +30,17 @@ def route(request):
     }
 
     names = []
+    locations = []
 
     for i, place in enumerate(places):
         payload['locations'].append(
             {'id': i + 1, 'time_window': '09:00-20:00', 'point': {'lat': place['lat'], 'lon': place['lon']}})
         names.append(place['name'])
+        locations.append([place['lat'], place['lon']])
 
     print(payload)
     print(names)
+    print(locations)
 
     # Отправьте запрос и получите ID поставленной задачи.
     response = requests.post(
@@ -94,7 +97,7 @@ def route(request):
                 print(yamaps_url)
 
                 print('Порядок ', ids)
-                return JsonResponse({})
+                return JsonResponse({'names': names, 'points': locations, 'order': ids})
 
     return JsonResponse({})
 
@@ -163,10 +166,6 @@ def vector(request):
         obj.categories = obj.categories.replace('\'', '"')
         obj.save()
         cur = json.loads(obj.categories)
-        # for key in cur:
-        #     cur[key] /= norm(list(cur.values()))
-        # obj.categories = json.dumps(cur)
-        # obj.save()
         if obj.id not in accepted:
             priority[np.dot(np.array(list(cur.values())), np.array(list(info.values())))].append(obj)
     res = []
@@ -177,6 +176,9 @@ def vector(request):
 
 
 def food(request):
+
+    product = request.GET.get('product')
+
     response = requests.get(
         'https://search-maps.yandex.ru/v1/?text=Бургеры&bbox=30.066693,59.546795~30.196469,59.602701&lang=ru_RU&apikey=925823c2-96c4-49ad-bb4a-fc036ba90c0f')
 
