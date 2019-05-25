@@ -94,8 +94,9 @@ def route(request):
 def build(request):
     ids = [0, 1, 2]
     location = [[59.55971, 30.102793], [59.567352, 30.100999], [59.56954, 30.11393]]
+    names = ["Вокзал", "Гей парад", "Калич"]
 
-    return render(request, 'map.html', {'ids': ids, 'location': location})
+    return render(request, 'map.html', {'ids': ids, 'location': location, 'names': names})
 
 
 def vector(request):
