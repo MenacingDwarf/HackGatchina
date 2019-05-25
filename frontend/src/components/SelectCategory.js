@@ -23,6 +23,9 @@ class SelectCategory extends Component {
             categories: categories,
             current: current,
         })
+        if (current >= 7) {
+            this.sendCategories();
+        }
     };
     prevCategory = (value) => {
         let categories = [...this.state.categories];
@@ -31,7 +34,7 @@ class SelectCategory extends Component {
         this.setState({
             categories: categories,
             current: current,
-        })
+        });
     };
     sendCategories = () => {
         var obj = '{';
