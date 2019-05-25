@@ -1,11 +1,8 @@
 function init() {
-    // Задаём точки мультимаршрута.
-    //  var pointA = [55.749, 37.524],
-    //      pointB = "Москва, Красная площадь";
-        /**
-         * Создаем мультимаршрут.
-         * @see https://api.yandex.ru/maps/doc/jsapi/2.1/ref/reference/multiRouter.MultiRoute.xml
-         */
+        var names = document.getElementById("names").innerHTML;
+        names = names.split('\'');
+        names = JSON.parse(names.join('"'));
+
 
         multiRoute = new ymaps.multiRouter.MultiRoute({
             referencePoints: points,
@@ -35,15 +32,39 @@ function init() {
 
     // Создаем карту с добавленной на нее кнопкой.
     var myMap = new ymaps.Map('map', {
-        center: [55.739625, 37.54120],
+        center: [59.55971, 30.102793],
         zoom: 12,
         controls: [changePointsButton]
     }, {
         buttonMaxWidth: 300
     });
 
+
+
     // Добавляем мультимаршрут на карту.
     myMap.geoObjects.add(multiRoute);
+
+    for (var i=0; i<points.length; i++) {
+        myMap.geoObjects.add(myGeoObject = new ymaps.GeoObject({
+            // Описание геометрии.
+            geometry: {
+                type: "Point",
+                coordinates: [points[i][0], points[i][1] - 0.002]
+            },
+            // Свойства.
+            properties: {
+                // Контент метки.
+                iconContent: names[i],
+                //hintContent: 'Ну давай уже тащи'
+            }
+        }, {
+            // Опции.
+            // Иконка метки будет растягиваться под размер ее содержимого.
+            preset: 'islands#blackStretchyIcon',
+            // Метку можно перемещать.
+            draggable: true
+        }))
+    }
 }
 
 ymaps.ready(init);
