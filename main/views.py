@@ -97,13 +97,32 @@ def build(request):
     location = [[59.55971, 30.102793], [59.567352, 30.100999], [59.56954, 30.11393]]
     names = ["Вокзал", "Гей парад", "Калич"]
 
-    return render(request, 'map.html', {'ids': ids, 'location': location, 'names': names})
+    response = requests.get(
+        'https://search-maps.yandex.ru/v1/?text=Бургеры&bbox=30.066693,59.546795~30.196469,59.602701&lang=ru_RU&apikey=925823c2-96c4-49ad-bb4a-fc036ba90c0f')
+
+    content = response.json()
+    cafes = []
+    cafe_location = []
+    for i in content['features']:
+        if "'" not in i['properties']['CompanyMetaData']['name']:
+            cafes.append(i['properties']['CompanyMetaData']['name'])
+            cafe_location.append(list(reversed(i['geometry']['coordinates'])))
+        else:
+
+            print('мда')
+
+    print(cafes)
+    print(cafe_location)
+
+    return render(request, 'map.html',
+                  {'ids': ids, 'location': location, 'names': names, 'cafes': cafes, 'cafe_location': cafe_location})
 
 
 from numpy.linalg import norm
 import numpy as np
 from collections import defaultdict
 from django.core import serializers
+
 
 def normalize(request):
     objects = Sight.objects.all()
@@ -117,6 +136,7 @@ def normalize(request):
         obj.save()
     return JsonResponse({})
 
+
 def vector(request):
     info = json.loads(request.GET.get('info'))
     accepted = json.loads(request.GET.get('accepted'))
@@ -127,7 +147,7 @@ def vector(request):
             info[key] /= n
     if len(cancelled) != 0:
         for key in cancelled:
-            info[key] -= cancelled[key]/2.53
+            info[key] -= cancelled[key] / 2.53
             if info[key] < 0:
                 info[key] = 0
     objects = Sight.objects.all()
@@ -147,3 +167,22 @@ def vector(request):
         res += priority[key]
 
     return JsonResponse({"sights": serializers.serialize("json", reversed(res), ensure_ascii=False), "info": info})
+
+
+def food(request):
+    response = requests.get(
+        'https://search-maps.yandex.ru/v1/?text=Бургеры&bbox=30.066693,59.546795~30.196469,59.602701&lang=ru_RU&apikey=925823c2-96c4-49ad-bb4a-fc036ba90c0f')
+
+    content = response.json()
+    cafes = []
+    cafe_location = []
+    for i in content['features']:
+        if "'" not in i['properties']['CompanyMetaData']['name']:
+            cafes.append(i['properties']['CompanyMetaData']['name'])
+            cafe_location.append(list(reversed(i['geometry']['coordinates'])))
+        else:
+
+            print('мда')
+
+
+    return HttpResponse('lol')
