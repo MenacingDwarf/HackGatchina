@@ -36,7 +36,7 @@ class Home extends Component {
                         <div className="h3">Добро пожаловать в Гатчину!</div>
                         <p>Мы привествуем всех гостей Гатчины и хотим предложить вам сконструировать свою
                             персонализированную прогулку по прекрасному городу Гатчина!</p>
-                        <Link to="/route">
+                        <Link to="/categories">
                             <button className="btn btn-primary">Подготовить маршрут</button>
                         </Link>
                     </center>

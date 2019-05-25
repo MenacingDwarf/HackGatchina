@@ -5,10 +5,12 @@ import Contacts from "./components/Contacts";
 import Navbar from "./components/Navbar";
 import SelectCategory from "./components/SelectCategory";
 import SelectPlaces from "./components/SelectPlaces";
+import SelectRoute from "./components/SelectRoute";
 
 class App extends Component {
     state = {
-        categories: []
+        categories: [],
+        places: []
     };
 
     getCategories = (categories) => {
@@ -18,7 +20,9 @@ class App extends Component {
     };
 
     getLiked = (liked) => {
-        console.log(liked)
+        this.setState({
+            places: liked
+        })
     };
 
     render() {
@@ -29,13 +33,16 @@ class App extends Component {
                     <div className="container">
                         <Route exact path='/' component={Home}/>
                         <Route path='/contacts' component={Contacts}/>
-                        <Route path='/route' render={(routeProps) => (
+                        <Route path='/categories' render={(routeProps) => (
                             <SelectCategory {...routeProps} getCategories={this.getCategories}/>
                         )}/>
 
                         <Route path='/places' render={(routeProps) => (
                             <SelectPlaces {...routeProps} categories={this.state.categories} endSelecting={this.getLiked}/>
                         )} />
+                        <Route path='/route' render={(routeProps) => (
+                            <SelectRoute {...routeProps} places={this.state.places} />
+                        )}/>
                     </div>
                 </div>
             </BrowserRouter>

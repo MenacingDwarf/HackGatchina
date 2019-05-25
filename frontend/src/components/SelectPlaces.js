@@ -71,7 +71,7 @@ class SelectPlaces extends Component {
     endSelecting = () => {
         var liked = this.state.liked;
         this.props.endSelecting(liked);
-        this.props.history.push('/')
+        this.props.history.push('/route')
     };
 
     render() {
