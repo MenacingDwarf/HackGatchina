@@ -98,6 +98,8 @@ def route(request):
                 print(yamaps_url)
 
                 print('Порядок ', ids)
+                names.insert(0, 'Вокзал')
+                locations.insert(0, [59.55971, 30.102793])
                 return render(request, 'map.html', {'names': names, 'points': locations, 'order': ids})
                     #JsonResponse({'names': names, 'points': locations, 'order': ids})
 

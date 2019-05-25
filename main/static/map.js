@@ -1,16 +1,30 @@
 function init() {
     var names = document.getElementById("names").innerHTML;
+    names = names.split('"');
+    //alert(names.join('"'));
+    names = names.join('\\"');
     names = names.split('\'');
-    names = JSON.parse(names.join('"'));
+    //alert(names.join('"'));
+    names = names.join('"');
+    names = JSON.parse(names);
+    //alert(names);
 
-    var cafes = document.getElementById("cafes").innerHTML;
-    cafes = cafes.split('\'');
-    cafes = JSON.parse(cafes.join('"'));
+    // var cafes = document.getElementById("cafes").innerHTML;
+    // cafes = cafes.split('\'');
+    // cafes = JSON.parse(cafes.join('"'));
+
+    let npoints = [];
+    let nnames = [];
+    console.log(order);
+    order.forEach(ord => {
+        npoints = [...npoints, points[ord]];
+        nnames = [...nnames, names[ord]]
+    });
 
     //alert(cafe_locations);
 
     multiRoute = new ymaps.multiRouter.MultiRoute({
-        referencePoints: points,
+        referencePoints: npoints,
         params: {
             //Тип маршрутизации - пешеходная маршрутизация.
             routingMode: 'pedestrian'
@@ -28,11 +42,11 @@ function init() {
 
     //Объявляем обработчики для кнопки.
     changePointsButton.events.add('select', function () {
-        multiRoute.model.setReferencePoints([pointB, pointA]);
+        multiRoute.model.setReferencePoints([npoints[0], npoints[1]]);
     });
 
     changePointsButton.events.add('deselect', function () {
-        multiRoute.model.setReferencePoints([pointA, pointB]);
+        multiRoute.model.setReferencePoints([npoints[1], npoints[0]]);
     });
 
     // Создаем карту с добавленной на нее кнопкой.
@@ -48,26 +62,28 @@ function init() {
     // Добавляем мультимаршрут на карту.
     myMap.geoObjects.add(multiRoute);
 
-    alert(cafes);
-    for (var i = 0; i < cafe_locations.length; i++) {
-        //alert(cafe_locations[i]);
-        myMap.geoObjects.add(new ymaps.Placemark(cafe_locations[i], {
-            balloonContent: '<p>' + cafes[i] + '</p><a href="https://github.com"><button><p style="color: green">Добавить в маршрут</p></button></a>'
-        }, {
-            preset: 'islands#redSportIcon'
-        }));
-    }
-    for (var i = 0; i < points.length; i++) {
+    // alert(cafes);
+    // for (var i = 0; i < cafe_locations.length; i++) {
+    //     //alert(cafe_locations[i]);
+    //     myMap.geoObjects.add(new ymaps.Placemark(cafe_locations[i], {
+    //         balloonContent: '<p>' + cafes[i] + '</p><a href="https://github.com"><button><p style="color: green">Добавить в маршрут</p></button></a>'
+    //     }, {
+    //         preset: 'islands#redSportIcon'
+    //     }));
+    // }
+
+    console.log(points.join('\n'));
+    for (var i = 0; i < npoints.length; i++) {
         myMap.geoObjects.add(myGeoObject = new ymaps.GeoObject({
             // Описание геометрии.
             geometry: {
                 type: "Point",
-                coordinates: [points[i][0], points[i][1] - 0.002]
+                coordinates: [npoints[i][0], npoints[i][1] - 0.002]
             },
             // Свойства.
             properties: {
                 // Контент метки.
-                iconContent: names[i],
+                iconContent: nnames[i],
                 //hintContent: 'Ну давай уже тащи'
             }
         }, {

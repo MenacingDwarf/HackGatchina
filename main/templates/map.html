@@ -6,8 +6,13 @@
     <title>Построение пешеходного мультимаршрута</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=1e083c60-3838-4701-bdae-e8629cf7575c" type="text/javascript"></script>
-    <script>points = JSON.parse('{{ location|safe }}')</script>
-    <script>cafe_locations = JSON.parse('{{ cafe_location|safe }}')</script>
+    <script>points = JSON.parse('{{ points|safe }}')</script>
+    <script>order = JSON.parse('{{ order|safe }}')</script>
+{#    <script>cafe_locations = JSON.parse('{{ cafe_location|safe }}')</script>#}
+{#    <script>#}
+{#        names = JSON.parse('{{ names|safe }}');#}
+{#    </script>#}
+{#    <script>cafes = JSON.parse('{{ cafes|safe }}')</script>#}
 	<style>
         html, body, #map {
             width: 100%; height: 100%; padding: 0; margin: 0;
@@ -17,7 +22,7 @@
 
 <body>
 <span id="names" hidden>{{ names|safe }}</span>
-<span id="cafes" hidden>{{ cafes|safe }}</span>
+{#<span id="cafes" hidden>{{ cafes|safe }}</span>#}
 <div style="width: 50%; height: 50%; margin: auto;" id="map"></div>
 <script src="../static/map.js" type="text/javascript"></script>
 </body>
