@@ -29,7 +29,12 @@ class SelectRoute extends Component {
     };
 
     componentDidMount() {
-        this.sendToServer(this)
+        var places = this.props.places.map(place => {
+            return {name: place.fields.name, lat: place.fields.lat, lon: place.fields.lon}
+        });
+        var body = '?places=' + JSON.stringify(places);
+        window.location.href = "http://127.0.0.1:8000/route"+body;
+        // this.sendToServer(this)
     }
 
     render() {
