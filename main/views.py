@@ -135,4 +135,4 @@ def vector(request):
     for key in sorted(priority.keys()):
         res += priority[key]
 
-    return HttpResponse(serializers.serialize("json", res, ensure_ascii=False))
+    return HttpResponse(serializers.serialize("json", reversed(res), ensure_ascii=False))

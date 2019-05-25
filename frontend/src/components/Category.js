@@ -23,7 +23,7 @@ class Category extends Component {
         })
     };
     render() {
-        var prev = this.props.category.id !== 0 ? <button className="btn btn-primary" onClick={this.handleClick}>Назад</button> : null;
+        var prev = this.props.category.id !== 0 ? <button className="btn btn-primary mr-2" onClick={this.handleClick}>Назад</button> : null;
         var next = this.props.category.id !== 6 ? <button className="btn btn-primary" onClick={this.handleSubmit}>Дальше</button> :
             <button className="btn btn-primary" onClick={() => this.props.end()}>Закончить</button>;
         return (

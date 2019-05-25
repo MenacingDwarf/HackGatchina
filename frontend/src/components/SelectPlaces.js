@@ -1,6 +1,11 @@
 import React, {Component} from 'react'
+import Place from "./Place";
 
 class SelectPlaces extends Component {
+    state = {
+        sights: null
+    };
+
     componentDidMount() {
         function sendCategories(comp) {
             var xhr = new XMLHttpRequest();
@@ -10,10 +15,13 @@ class SelectPlaces extends Component {
             });
             body = body.slice(0, -2) + '}';
             xhr.open("GET", 'http://127.0.0.1:8000/vector' + body, true);
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.onreadystatechange = function () {
                 if (this.readyState !== 4) return;
-                console.log(JSON.parse(decodeURIComponent(this.responseText)));
+                var sights = JSON.parse(decodeURIComponent(this.responseText));
+                console.log(sights);
+                comp.setState({
+                    sights: sights
+                });
             };
 
             xhr.send(body);
@@ -23,9 +31,11 @@ class SelectPlaces extends Component {
     }
 
     render() {
-        var cat = this.props.categories.map(cat => <div key={cat.category}>{cat.category}: {cat.value}</div>);
+        var sight = this.state.sights ? <Place sight={this.state.sights[0].fields} /> : <div>Loading...</div>;
         return (
-            <div>{cat}</div>
+            <div>
+                {sight}
+            </div>
         )
     }
 }
