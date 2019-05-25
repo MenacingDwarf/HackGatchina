@@ -56,6 +56,7 @@ function init() {
         zoom: 15,
         controls: ['smallMapDefaultSet']
     }, {
+        //autoFitToViewport: 'always',
         buttonMaxWidth: 300
     });
 
