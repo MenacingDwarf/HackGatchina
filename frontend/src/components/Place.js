@@ -5,9 +5,13 @@ class Place extends Component {
         const { sight } = this.props;
         return (
             <center>
-                <div className="h3">{sight.fields.name}</div>
-                <img className="w-75" src={sight.fields.photo} alt=""/>
-                <p>{sight.fields.description}</p>
+                <div className="place-img">
+                    <img src={sight.fields.photo} alt=""/>
+                </div>
+                <div className="place-description">
+                    <div className="h3">{sight.fields.name}</div>
+                    <p>{sight.fields.description}</p>
+                </div>
                 <button className="btn btn-danger mr-2" onClick={() => this.props.dislike(sight.pk)}>Не нравится</button>
                 <button className="btn btn-success" onClick={() => this.props.like(sight.pk)}>Нравится</button>
                 <br/>

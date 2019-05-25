@@ -1,8 +1,10 @@
 import React, {Component} from 'react'
+import MyMap from "./MyMap";
 
 class SelectRoute extends Component {
     state = {
-      places: this.props.places
+        places: this.props.places,
+        mapinfo: null
     };
 
     sendToServer(comp) {
@@ -15,8 +17,12 @@ class SelectRoute extends Component {
         xhr.open("GET", 'http://127.0.0.1:8000/route' + body, true);
         xhr.onreadystatechange = function () {
             if (this.readyState !== 4) return;
+            console.log(this.responseText);
             var answer = JSON.parse(decodeURIComponent(this.responseText));
-            console.log(answer)
+            console.log(answer);
+            comp.setState({
+                mapinfo: answer
+            })
         };
 
         xhr.send(body);
@@ -27,8 +33,12 @@ class SelectRoute extends Component {
     }
 
     render() {
+        console.log('wtf');
+        var mapinfo = this.state.mapinfo ? <MyMap mapinfo={this.state.mapinfo}/> : <div>Построение маршрута...</div>;
         return (
-            <div>Hello</div>
+            <div>
+                {mapinfo}
+            </div>
         )
     }
 }
