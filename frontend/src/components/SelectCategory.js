@@ -36,10 +36,13 @@ class SelectCategory extends Component {
         })
     };
     sendCategories = () => {
-        let answers = this.state.categories.map(cat => {
-            return {category: cat.name, value: cat.answer}
+        var obj = '{';
+        this.state.categories.forEach(cat => {
+            obj += '"' + cat.name + '": ' + cat.answer + ', ';
         });
-        this.props.getCategories(answers);
+        obj = obj.slice(0,-2);
+        obj += "}";
+        this.props.getCategories(JSON.parse(obj));
         this.props.history.push('/places')
     };
     render() {

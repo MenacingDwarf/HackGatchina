@@ -17,6 +17,10 @@ class App extends Component {
         })
     };
 
+    getLiked = (liked) => {
+        console.log(liked)
+    };
+
     render() {
         return (
             <BrowserRouter>
@@ -30,7 +34,7 @@ class App extends Component {
                         )}/>
 
                         <Route path='/places' render={(routeProps) => (
-                            <SelectPlaces {...routeProps} categories={this.state.categories} />
+                            <SelectPlaces {...routeProps} categories={this.state.categories} endSelecting={this.getLiked}/>
                         )} />
                     </div>
                 </div>

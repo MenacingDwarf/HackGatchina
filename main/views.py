@@ -123,7 +123,6 @@ import numpy as np
 from collections import defaultdict
 from django.core import serializers
 
-
 def normalize(request):
     objects = Sight.objects.all()
     for obj in objects:
@@ -134,40 +133,35 @@ def normalize(request):
                 cur[key] /= n
         obj.categories = json.dumps(cur)
         obj.save()
-
+    return JsonResponse({})
 
 def vector(request):
     info = json.loads(request.GET.get('info'))
+    accepted = json.loads(request.GET.get('accepted'))
+    cancelled = json.loads(request.GET.get('cancelled'))
     n = norm(list(info.values()))
     if n != 0:
         for key in info:
             info[key] /= n
+    if len(cancelled) != 0:
+        for key in cancelled:
+            info[key] -= cancelled[key]/2.53
+            if info[key] < 0:
+                info[key] = 0
     objects = Sight.objects.all()
     priority = defaultdict(list)
     for obj in objects:
+        obj.categories = obj.categories.replace('\'', '"')
+        obj.save()
         cur = json.loads(obj.categories)
-        priority[np.dot(np.array(list(cur.values())), np.array(list(info.values())))].append(obj)
+        # for key in cur:
+        #     cur[key] /= norm(list(cur.values()))
+        # obj.categories = json.dumps(cur)
+        # obj.save()
+        if obj.id not in accepted:
+            priority[np.dot(np.array(list(cur.values())), np.array(list(info.values())))].append(obj)
     res = []
     for key in sorted(priority.keys()):
         res += priority[key]
-    print(serializers.serialize("json", res))
 
-    return JsonResponse({"res": Sight.objects.get(id=1).name})
-
-
-def food(request):
-    response = requests.get(
-        'https://search-maps.yandex.ru/v1/?text=Японская кухня&bbox=30.066693,59.546795~30.196469,59.602701&lang=ru_RU&apikey=925823c2-96c4-49ad-bb4a-fc036ba90c0f')
-
-    content = response.json()
-    cafes = []
-    cafe_location = []
-    for i in content['features']:
-        print(i['properties']['CompanyMetaData']['name'])
-        cafes.append(i['properties']['CompanyMetaData']['name'])
-        cafe_location.append(i['geometry']['coordinates'])
-
-    print(cafes)
-    print(cafe_location)
-
-    return HttpResponse(response)
+    return JsonResponse({"sights": serializers.serialize("json", reversed(res), ensure_ascii=False), "info": info})

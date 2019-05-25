@@ -7,4 +7,6 @@ urlpatterns = [
     path('build/', views.build, name="build"),
     path('vector/', views.vector, name="vector"),
     path('food/', views.food, name="food")
+    path('vector/', views.vector, name="vector"),
+    path('normalize/', views.normalize, name="normalize")
 ]
