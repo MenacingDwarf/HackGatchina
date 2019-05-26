@@ -32,7 +32,7 @@ class Category extends Component {
                 <img src={this.props.category.image} alt="" className="w-100"/>
                     <div className="form-group">
                         <label htmlFor="formControlRange">Ваше предпочтение для этой категории</label>
-                        <input type="range" onChange={this.handleChange} className="form-control-range mb-2"
+                        <input type="range" onChange={this.handleChange} className="form-control-range mb-2 w-75"
                                id="formControlRange" value={this.state.value}/>
                         {prev}
                         {next}

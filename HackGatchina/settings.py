@@ -133,5 +133,6 @@ STATIC_URL = '/static/'
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    "http://hackgatchlna.herokuapp.com"
+    "http://hackgatchlna.herokuapp.com",
+    "https://hackgatchlna.herokuapp.com"
 ]
