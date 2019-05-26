@@ -12,7 +12,7 @@ class AdminPage extends Component {
         let text = {name: comp.state.name, description: comp.state.description};
         var body = '?text=' + JSON.stringify(text);
         console.log(body);
-        xhr.open("GET", 'https://hackgatchina.herokuapp.com/predict' + body, true);
+        xhr.open("GET", 'http://127.0.0.1:8000/predict' + body, true);
         xhr.onreadystatechange = function () {
             if (this.readyState !== 4) return;
             var answer = JSON.parse(decodeURIComponent(this.responseText));
