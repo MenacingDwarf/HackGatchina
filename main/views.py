@@ -7,7 +7,7 @@ from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 
 from .models import Sight
-from .learn import pred
+import pred
 
 
 def hello(request):
@@ -21,7 +21,6 @@ def route(request):
 
     cafes = []
     cafe_location = []
-
 
     if request.GET.get('food'):
         # food = json.loads(request.GET.get('food'))
@@ -55,8 +54,6 @@ def route(request):
     names = []
     locations = []
 
-
-
     if request.GET.get('cafe'):
         cafe = json.loads(request.GET.get('cafe'))
         print(cafe)
@@ -64,7 +61,6 @@ def route(request):
         locations.append(cafe['coords'])
         cafes.remove(names[-1])
         cafe_location.remove(locations[-1])
-
 
     print(payload)
     print(names)
@@ -235,5 +231,7 @@ def food(request):
 
 
 def predict(request):
-    # answer = pred(request.GET.get('asda'))
-    pass
+    print(request.GET.get('text'))
+    answer = pred.prediction(request.GET.get('text'))
+    print(answer)
+    return JsonResponse({'answer': list(answer)})
