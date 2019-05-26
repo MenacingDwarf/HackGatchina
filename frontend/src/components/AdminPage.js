@@ -6,11 +6,25 @@ class AdminPage extends Component {
         description: '',
         categories: null
     };
-    getCategories = () => {
-        console.log(this.state.name, this.state.description);
-        this.setState({
-            categories: [1, 2, 0, 3, 0, 0, 5]
-        })
+    getFromServer(comp) {
+        var xhr = new XMLHttpRequest();
+        let text = comp.state.name + '+' + comp.state.description;
+        var body = '?text=' + text;
+        console.log(body);
+        xhr.open("GET", 'http://127.0.0.1:8000/predict' + body, true);
+        xhr.onreadystatechange = function () {
+            if (this.readyState !== 4) return;
+            var answer = JSON.parse(decodeURIComponent(this.responseText));
+            comp.setState({
+                categories: answer
+            });
+        };
+
+        xhr.send(body);
+    };
+    getCategories = (e) => {
+        this.getFromServer(this);
+        e.target.innerHTML = "Загрузка...";
     };
     handleNameChange = (e) => {
         this.setState({
