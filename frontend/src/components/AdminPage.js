@@ -4,12 +4,13 @@ class AdminPage extends Component {
     state = {
         name: '',
         description: '',
-        categories: null
+        categories: null,
+        image: null
     };
     getFromServer(comp) {
         var xhr = new XMLHttpRequest();
-        let text = comp.state.name + '+' + comp.state.description;
-        var body = '?text=' + text;
+        let text = {name: comp.state.name, description: comp.state.description};
+        var body = '?text=' + JSON.stringify(text);
         console.log(body);
         xhr.open("GET", 'https://hackgatchina.herokuapp.com/predict' + body, true);
         xhr.onreadystatechange = function () {
@@ -17,7 +18,8 @@ class AdminPage extends Component {
             var answer = JSON.parse(decodeURIComponent(this.responseText));
             console.log(answer);
             comp.setState({
-                categories: answer.answer
+                categories: answer.answer,
+                image: answer.link
             });
         };
 
@@ -56,8 +58,10 @@ class AdminPage extends Component {
                 <button onClick={this.sendNewSign} className="btn btn-primary">Отправить</button>
             </div>
         ) : <button onClick={this.getCategories} className="btn btn-primary">Подобрать параметры</button>;
+        var img = this.state.image ? <img src={this.state.image} alt="" className="w-100" /> : null;
         return (
             <center>
+                {img}
                 <div className="h5">Добавить новую достопримечательность:</div>
                 <label htmlFor="admin-sight-name">Название</label>
                 <input id="admin-sight-name" onChange={this.handleNameChange} className="form-control mb-2 w-75" type="text" value={this.state.name}/>
