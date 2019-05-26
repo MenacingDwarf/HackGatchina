@@ -100,7 +100,7 @@ class SelectCategory extends Component {
             return (
                 <div className="w-100" key={cat.id}>
                     <img style={{borderRadius: "10px", width: "50%"}} src={cat.image} alt=""/>
-                    <span>{cat.answer}/100</span>
+                    <span style={{fontSize: "0.7em"}}>{cat.answer}/100</span>
                 </div>
             )
         });
