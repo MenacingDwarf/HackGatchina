@@ -15,8 +15,9 @@ class AdminPage extends Component {
         xhr.onreadystatechange = function () {
             if (this.readyState !== 4) return;
             var answer = JSON.parse(decodeURIComponent(this.responseText));
+            console.log(answer);
             comp.setState({
-                categories: answer
+                categories: answer.answer
             });
         };
 
@@ -46,22 +47,22 @@ class AdminPage extends Component {
         console.log(this.state)
     };
     render() {
-        var categoriesList = this.state.categories ? this.state.categories.join(" ") : null;
+        var categoriesList = this.state.categories ? this.state.categories.join(' ') : null;
         var categories = this.state.categories ? (
             <div>
-                <div className="h3">Рекомендуемые параметры:</div>
-                <label htmlFor="admin-sight-name">История Война Искусство Религия Природа Интересные Архитектура</label>
+                <div className="h5">Рекомендуемые параметры:</div>
+                <label htmlFor="admin-sight-name">Архитектура Искусство История Интересные Природа Религия Война</label>
                 <input id="admin-sight-name" onChange={this.handleCategoriesChange} className="form-control mb-2 w-75" type="text" value={categoriesList}/>
                 <button onClick={this.sendNewSign} className="btn btn-primary">Отправить</button>
             </div>
         ) : <button onClick={this.getCategories} className="btn btn-primary">Подобрать параметры</button>;
         return (
             <center>
-                <div className="h4">Добавить новую достопримечательность:</div>
+                <div className="h5">Добавить новую достопримечательность:</div>
                 <label htmlFor="admin-sight-name">Название</label>
                 <input id="admin-sight-name" onChange={this.handleNameChange} className="form-control mb-2 w-75" type="text" value={this.state.name}/>
                 <label htmlFor="admin-sight-description">Описание</label>
-                <input id="admin-sight-description" onChange={this.handleDescriptionChange} className="form-control mb-2 w-75" type="text" value={this.state.description}/>
+                <textarea id="admin-sight-description" onChange={this.handleDescriptionChange} rows="3" className="form-control mb-2 w-75" value={this.state.description}/>
                 {categories}
             </center>
         )
