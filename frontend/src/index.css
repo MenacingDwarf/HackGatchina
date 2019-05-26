@@ -23,3 +23,23 @@ body {
   border-radius: 5px;
   background-color: ghostwhite;
 }
+input[type=range]
+{
+-webkit-appearance: none
+}
+input[type=range]::-webkit-slider-runnable-track {
+border-radius: 10px;
+height: 8px;
+border: 1px solid #000;
+background-color: #ccc;
+}
+input[type=range]::-webkit-slider-thumb {
+-webkit-appearance: none;
+background-color: #3333CC;
+border: 3px solid #000;
+width: 26px;
+height: 26px;
+border-radius: 13px;
+cursor: pointer;
+margin-top: -10px;
+}
