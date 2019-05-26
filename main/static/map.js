@@ -7,34 +7,53 @@ var food = document.getElementById("sendFood");
 food.setAttribute("onclick", "send_food(this)");
 var food_text = document.getElementById("food-text");
 
+var names = document.getElementById("names").innerHTML;
+names = names.split('"');
+//alert(names.join('"'));
+names = names.join('\\"');
+names = names.split('\'');
+//alert(names.join('"'));
+names = names.join('"');
+names = JSON.parse(names);
+//alert(names);
+
+var cafes = document.getElementById("cafes").innerHTML;
+cafes = cafes.split('"');
+//alert(names.join('"'));
+cafes = cafes.join('\\"');
+cafes = cafes.split('\'');
+//alert(names.join('"'));
+cafes = cafes.join('"');
+cafes = JSON.parse(cafes);
+
+let npoints = [];
+let nnames = [];
+console.log(order);
+order.forEach(ord => {
+    npoints = [...npoints, points[ord]];
+    nnames = [...nnames, names[ord]]
+});
+
+var signs = document.createElement('div');
+signs.setAttribute("class", "container");
+
+var title = document.createElement('h4');
+title.innerHTML = "Ваш персональный маршрут:";
+signs.appendChild(title);
+
+var signsList = document.createElement('ol');
+console.log(nnames);
+for (let i = 0; i<nnames.length-1; i++) {
+    let sign = document.createElement('li');
+    sign.innerHTML = nnames[i];
+    signsList.appendChild(sign);
+}
+
+signs.appendChild(signsList);
+document.body.appendChild(signs);
+
+
 function init() {
-    var names = document.getElementById("names").innerHTML;
-    names = names.split('"');
-    //alert(names.join('"'));
-    names = names.join('\\"');
-    names = names.split('\'');
-    //alert(names.join('"'));
-    names = names.join('"');
-    names = JSON.parse(names);
-    //alert(names);
-
-    var cafes = document.getElementById("cafes").innerHTML;
-    cafes = cafes.split('"');
-    //alert(names.join('"'));
-    cafes = cafes.join('\\"');
-    cafes = cafes.split('\'');
-    //alert(names.join('"'));
-    cafes = cafes.join('"');
-    cafes = JSON.parse(cafes);
-
-
-    let npoints = [];
-    let nnames = [];
-    console.log(order);
-    order.forEach(ord => {
-        npoints = [...npoints, points[ord]];
-        nnames = [...nnames, names[ord]]
-    });
 
     //alert(cafe_locations);
 
@@ -75,7 +94,7 @@ function init() {
         cafe.name = cafe.name.join('+');
         var link = window.location.href + "&cafe=" + JSON.stringify(cafe);
         myMap.geoObjects.add(new ymaps.Placemark(cafe_locations[i], {
-            balloonContent: '<p>' + cafes[i] + '</p><a href='+link+'><button><p style="color: green">Добавить в маршрут</p></button></a>'
+            balloonContent: '<p>' + cafes[i] + '</p><a href=' + link + '><button><p style="color: green">Добавить в маршрут</p></button></a>'
         }, {
             preset: 'islands#redSportIcon'
         }));

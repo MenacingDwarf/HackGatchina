@@ -5,19 +5,20 @@ body {
   font-family: sans-serif;
 }
 .place-img {
-  height: 35vh;
+  height: 30vh;
   width: 100%;
   overflow: hidden;
   border-radius: 5px;
   margin-bottom: 5px;
 }
 .place-img > img {
-  width: 100%;
+  width: 90%;
+  margin: auto;
 }
 .place-description {
-  min-height: 30vh;
-  max-height: 30vh;
-  height: 30vh;
+  min-height: 28vh;
+  max-height: 28vh;
+  height: 28vh;
   overflow: auto;
   margin-bottom: 5px;
   border-radius: 5px;

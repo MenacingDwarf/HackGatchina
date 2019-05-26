@@ -36,7 +36,7 @@ class SelectPlaces extends Component {
 
     componentDidMount() {
 
-        this.sendToServer(this, [],null)
+        this.sendToServer(this, [], null)
     }
 
     likeSight = (id) => {
@@ -65,7 +65,7 @@ class SelectPlaces extends Component {
             sights: [],
             passed: passed
         });
-        this.sendToServer(this,passed,cancelled[-1])
+        this.sendToServer(this, passed, cancelled[-1])
     };
 
     endSelecting = () => {
@@ -81,7 +81,14 @@ class SelectPlaces extends Component {
             let inCancelled = this.state.cancelled.find(act => act.pk === cur);
             let s = inLiked ? inLiked : inCancelled;
             let border = inLiked ? "solid green 2px" : "solid red 2px";
-            return <img key={s.pk} src={s.fields.photo} style={{display: "inline-block", width: "10%", borderRadius: "20px", border: border}} alt=""/>
+            return <img key={s.pk} src={s.fields.photo} style={{
+                display: "inline-block",
+                width: "10%",
+                height: "100%",
+                overflow: "none",
+                borderRadius: "20px",
+                border: border
+            }} alt=""/>
         }) : null;
         var sight = this.state.sights.length !== 0 ?
             <Place sight={this.state.sights[this.state.current]} like={this.likeSight}
@@ -89,7 +96,8 @@ class SelectPlaces extends Component {
             <div>Подбираем для вас лучшие варианты...</div>;
         return (
             <div>
-                <div style={{minWidth: "100%"}}>
+                <center>Выбрано: {this.state.liked.length}, Просмотрено: {this.state.passed.length}</center>
+                <div style={{minWidth: "95%", height: "5vh", marginBottom: "10px"}}>
                     {sightsRounds}
                 </div>
                 <div>
