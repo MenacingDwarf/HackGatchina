@@ -8,6 +8,7 @@ from django.shortcuts import render
 
 from .models import Sight
 import pred
+import re
 
 
 def hello(request):
@@ -57,10 +58,11 @@ def route(request):
     if request.GET.get('cafe'):
         cafe = json.loads(request.GET.get('cafe'))
         print(cafe)
-        names.append(cafe['name'])
-        locations.append(cafe['coords'])
-        cafes.remove(names[-1])
-        cafe_location.remove(locations[-1])
+        #names.append(cafe['name'])
+        #locations.append(cafe['coords'])
+        places.append({'name':cafe['name'], 'lat':cafe['coords'][0], 'lon':cafe['coords'][1]})
+        cafes.remove(places[-1]['name'])
+        cafe_location.remove([places[-1]['lat'], places[-1]['lon']])
 
     print(payload)
     print(names)
@@ -129,6 +131,10 @@ def route(request):
                 print('Порядок ', ids)
                 names.insert(0, 'Вокзал')
                 locations.insert(0, [59.55971, 30.102793])
+                print('-------------')
+                print(names)
+                print(locations)
+                print('-------------')
                 return render(request, 'map.html',
                               {'names': names, 'points': locations, 'order': ids, 'cafe_location': cafe_location,
                                'cafes': cafes})
@@ -232,6 +238,16 @@ def food(request):
 
 def predict(request):
     print(request.GET.get('text'))
+
+    response = requests.get('https://ru.wikipedia.org/wiki/{}'.format(request.GET.get('text')))
+
+    result = re.search(r'<a href=".+" class="image"', response.text)
+    print(result.group(0))
+    image = re.search(r':.+" ', result.group(0))
+    image = image.group(0)[1:-2]
+    print(image)
+
+
     answer = pred.prediction(request.GET.get('text'))
     print(answer)
     return JsonResponse({'answer': list(answer)})
