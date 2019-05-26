@@ -1,0 +1,1 @@
+web: gunicorn HackGatchina.wsgi --log-file -
