@@ -14,7 +14,7 @@ class SelectRoute extends Component {
         });
         var body = '?places=' + JSON.stringify(places);
         console.log(body);
-        xhr.open("GET", 'http://127.0.0.1:8000/route' + body, true);
+        xhr.open("GET", 'https://hackgatchina.herokuapp.com/route' + body, true);
         xhr.onreadystatechange = function () {
             if (this.readyState !== 4) return;
             console.log(this.responseText);
@@ -33,7 +33,7 @@ class SelectRoute extends Component {
             return {name: place.fields.name, lat: place.fields.lat, lon: place.fields.lon}
         });
         var body = '?places=' + JSON.stringify(places);
-        window.location.href = "http://127.0.0.1:8000/route"+body;
+        window.location.href = "https://hackgatchina.herokuapp.com/route"+body;
         // this.sendToServer(this)
     }
 
