@@ -116,7 +116,7 @@ class SelectCategory extends Component {
                     </div>
                     <div className="col-8">
                         <center>
-                            <div className="h3">{category.title}</div>
+                            <div className="h4">{category.title}</div>
                             <img src={category.image} alt="" className="w-100"/>
                             <div className="form-group">
                                 <label htmlFor="formControlRange">Ваше предпочтение для этой категории</label>
