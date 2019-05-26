@@ -98,7 +98,7 @@ function init() {
         }, {
             // Опции.
             // Иконка метки будет растягиваться под размер ее содержимого.
-            preset: 'islands#blackStretchyIcon',
+            preset: 'islands#greenStretchyIcon',
             // Метку можно перемещать.
             draggable: true
         }));
