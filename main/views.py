@@ -58,9 +58,9 @@ def route(request):
     if request.GET.get('cafe'):
         cafe = json.loads(request.GET.get('cafe'))
         print(cafe)
-        #names.append(cafe['name'])
-        #locations.append(cafe['coords'])
-        places.append({'name':cafe['name'], 'lat':cafe['coords'][0], 'lon':cafe['coords'][1]})
+        # names.append(cafe['name'])
+        # locations.append(cafe['coords'])
+        places.append({'name': cafe['name'], 'lat': cafe['coords'][0], 'lon': cafe['coords'][1]})
         cafes.remove(places[-1]['name'])
         cafe_location.remove([places[-1]['lat'], places[-1]['lon']])
 
@@ -237,17 +237,32 @@ def food(request):
 
 
 def predict(request):
-    print(request.GET.get('text'))
+    # print(request.GET.get('text'))
 
-    response = requests.get('https://ru.wikipedia.org/wiki/{}'.format(request.GET.get('text')))
+    text = request.GET.get('text')
+    name = json.loads(text)['name'].replace(' ', '_')
+    description = json.loads(text)['description']
+    print(name)
+    response = requests.get('https://ru.wikipedia.org/wiki/{}'.format(name))
 
     result = re.search(r'<a href=".+" class="image"', response.text)
     print(result.group(0))
     image = re.search(r':.+" ', result.group(0))
     image = image.group(0)[1:-2]
-    print(image)
+    response = requests.get('https://ru.wikipedia.org/wiki/{}#/media/File:{}'.format(name, image))
+    image = re.search(r'"og:image".+jpg', response.text)
+    image = re.search(r'https.+jpg', image.group(0))
+    print('------')
+    print(image.group(0))
+    print('-------')
 
-
-    answer = pred.prediction(request.GET.get('text'))
+    name = name.replace('_', ' ')
+    print(name)
+    answer = pred.prediction(name + ' ' + description)
     print(answer)
-    return JsonResponse({'answer': list(answer)})
+    return JsonResponse({'answer': list(answer), 'link': image.group(0)})
+
+
+def image(request):
+    return render(request, 'test.html',
+                  {'link': 'https://upload.wikimedia.org/wikipedia/commons/a/a1/Peterhof_front_20021011.jpg'})

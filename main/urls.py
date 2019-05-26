@@ -9,5 +9,6 @@ urlpatterns = [
     path('food/', views.food, name="food"),
     path('vector/', views.vector, name="vector"),
     path('normalize/', views.normalize, name="normalize"),
-    path('predict/', views.predict, name="predict")
+    path('predict/', views.predict, name="predict"),
+    path('image/', views.image, name='image')
 ]
