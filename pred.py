@@ -12,9 +12,9 @@ def normalize(text):
 
 def prediction(discription):
     print(os.path.abspath(os.curdir))
-    with open('./model.pkl', 'rb') as f:
+    with open('model.pkl', 'rb') as f:
         text_clf = pickle.load(f)
-    discription = discription.lower
+    discription = discription.lower()
     discription = re.sub(r'\(*\)', ' ', discription)
     discription = re.sub(r'\s\w{1,3}\s', ' ', discription)
     discription = re.sub(r'[!,\.\?\*\(\)"“”«»:;#№\-@%\+]', ' ', discription)
