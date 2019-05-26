@@ -22,7 +22,7 @@ class SelectCategory extends Component {
         this.setState({
             categories: categories,
             current: current,
-        })
+        });
         if (current >= 7) {
             this.sendCategories();
         }

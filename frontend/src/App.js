@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar";
 import SelectCategory from "./components/SelectCategory";
 import SelectPlaces from "./components/SelectPlaces";
 import SelectRoute from "./components/SelectRoute";
+import AdminPage from "./components/AdminPage";
 
 class App extends Component {
     state = {
@@ -43,6 +44,7 @@ class App extends Component {
                         <Route path='/route' render={(routeProps) => (
                             <SelectRoute {...routeProps} places={this.state.places} />
                         )}/>
+                        <Route path='/admin' component={AdminPage} />
                     </div>
                 </div>
             </BrowserRouter>
